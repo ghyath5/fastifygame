@@ -86,9 +86,10 @@ export function useFastify() {
     let interval = ref(null);
     const endTime = () => {
         clearInterval(interval)
-        time.value = 60
-        activeWordIndex.value = 0;
         setTimeout(() => {
+            time.value = 60
+            activeWordIndex.value = 0;
+            input.value = '';
             score.value = 0;
         }, 1000)
     }
@@ -100,6 +101,7 @@ export function useFastify() {
                 inputRef.value.blur()
                 clearInterval(interval.value)
                 interval.value = null
+                input.value = '';
                 bell.play()
                 randomize()
                 await done();

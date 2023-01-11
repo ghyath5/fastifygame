@@ -58,6 +58,11 @@ const wordCheckerClasses = (letter, idx) => {
       :class="wordCheckerClasses(wordLetter, idx)"
       v-for="(wordLetter, idx) in wordLetters"
       :key="props.word + wordLetter"
-    >{{ wordLetter }}&#x200d;</i>
+    >{{ wordLetter }}</i>
   </div>
 </template>
+<style scoped>
+div,i {
+unicode-bidi : bidi-override !important
+}
+</style>

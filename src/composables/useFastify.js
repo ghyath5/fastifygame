@@ -24,7 +24,7 @@ const randomize = () => {
         w7.split(' '),
     ].sort(() => 0.5 - Math.random()).forEach((arr) => words.push(...arr))
 }
-
+randomize()
 export function useFastify() {
     // var clock = new Audio(clockFile)
     var bell = new Audio(bellFile)

@@ -101,6 +101,7 @@ export function useFastify() {
                 clearInterval(interval.value)
                 interval.value = null
                 bell.play()
+                randomize()
                 await done();
                 return endTime()
             }

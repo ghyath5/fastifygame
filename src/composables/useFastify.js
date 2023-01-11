@@ -85,9 +85,9 @@ export function useFastify() {
     let interval = ref(null);
     const endTime = () => {
         clearInterval(interval)
+        time.value = 60
+        activeWordIndex.value = 0;
         setTimeout(() => {
-            time.value = 60
-            activeWordIndex.value = 0;
             input.value = '';
             score.value = 0;
         }, 1000)

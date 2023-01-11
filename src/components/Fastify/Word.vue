@@ -58,8 +58,6 @@ const wordCheckerClasses = (letter, idx) => {
       :class="wordCheckerClasses(wordLetter, idx)"
       v-for="(wordLetter, idx) in wordLetters"
       :key="props.word + wordLetter"
-    >
-      &#x200d;{{ wordLetter }}&#x200d;
-    </i>
+    >{{ wordLetter }}&#x200d;</i>
   </div>
 </template>

@@ -71,7 +71,7 @@ export function useFastify() {
 
     const done = async () => {
         try {
-            await fetch(`${import.meta.env.BASE_URL}/set?token=${route.query.token}`, {
+            await fetch(`https://tel-games.herokuapp.com/set?token=${route.query.token}`, {
                 method: 'POST',
                 body: JSON.stringify({ score: score.value })
             });

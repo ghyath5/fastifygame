@@ -11,16 +11,19 @@ const w4 = 'جالس على مؤخرتك اليوم كما البارح لاحي
 const w5 = 'اليوم انت حي وغدا تحت التراب يعني لا تفكر حالك رح تخلد بهالدنيا ياروحي مرجوعك الى ربك'
 const w6 = 'تذكر دائما انه هناك دائما كما تتذكر في وقت ماتتذكر من المتذكرين في الدنيا ولا تكن من هؤلاء الذين لم يكن لديهم مفكرة او روزناما'
 const w7 = "ليك عقلك براسك بتعرف خلاصك"
-const words = [];
-[
-    w1.split(' '),
-    w2.split(' '),
-    w3.split(' '),
-    w4.split(' '),
-    w5.split(' '),
-    w6.split(' '),
-    w7.split(' '),
-].sort(() => 0.5 - Math.random()).forEach((arr) => words.push(...arr))
+let words = [];
+const randomize = () => {
+    words = [];
+    [
+        w1.split(' '),
+        w2.split(' '),
+        w3.split(' '),
+        w4.split(' '),
+        w5.split(' '),
+        w6.split(' '),
+        w7.split(' '),
+    ].sort(() => 0.5 - Math.random()).forEach((arr) => words.push(...arr))
+}
 
 export function useFastify() {
     // var clock = new Audio(clockFile)
@@ -73,7 +76,7 @@ export function useFastify() {
         try {
             await fetch(`https://tel-games.herokuapp.com/set?token=${route.query.token}`, {
                 method: 'POST',
-                body: JSON.stringify({ score: score.value })
+                body: { score: score.value }
             });
         } catch (e) {
             console.log(e);

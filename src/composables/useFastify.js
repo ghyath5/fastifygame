@@ -1,4 +1,5 @@
 import { useVibrate } from "@vueuse/core"
+import axios from "axios"
 import { computed, ref, watch, reactive } from "vue"
 import { useRoute } from "vue-router"
 import { activeWordIndex, input, lastScore, time, TIME_LIMIT, words } from "../store/fastify"
@@ -84,9 +85,7 @@ export function useFastify() {
 
     const done = async () => {
         try {
-            await fetch(`https://tel-games.herokuapp.com/set?token=${route.query.token}&s=${score.value}`, {
-                method: 'POST'
-            });
+            await axios.get(`https://tel-games.herokuapp.com/set?token=${route.query.token}&s=${score.value}`)
         } catch (e) {
             console.log(e);
         }

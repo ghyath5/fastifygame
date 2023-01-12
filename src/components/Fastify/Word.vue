@@ -46,6 +46,16 @@ const wordCheckerClasses = (letter, idx) => {
       inputLetters.value.length - 1 >= idx,
   };
 };
+const addConnection = (idx, letter) => {
+  const prevLetter = props.word[idx - 1];
+  return !["ا", "ل", "ء", "ة"].includes(letter) &&
+    !["و", "ر", "ؤ", "ذ", "د", "ز", "ا", "ل"].includes(prevLetter) &&
+    idx > 0 &&
+    idx < props.word.length - 1
+    ? true
+    : false;
+};
+// &zwj;
 </script>
 <template>
   <p
@@ -55,24 +65,21 @@ const wordCheckerClasses = (letter, idx) => {
     class="p-2"
     :class="{ 'text-green-500': props.green }"
   >
-    <cite
-      lang="ar"
-      dir="rtl"
+    <span
       class="text-xl"
       :class="wordCheckerClasses(wordLetter, idx)"
       v-for="(wordLetter, idx) in wordLetters"
       :key="props.word + wordLetter"
-      >{{ wordLetter }}</cite
     >
+      {{ addConnection(idx, wordLetter) ? "&#x200d;" : "" }}{{ wordLetter }}
+    </span>
   </p>
 </template>
 <style scoped>
 @import url(https://fonts.googleapis.com/earlyaccess/droidarabickufi.css);
 p,
-i,
-cite {
+span {
   direction: rtl !important;
-  unicode-bidi: bidi-override !important;
   font-family: "Droid Arabic Kufi", STSong-Light;
 }
 </style>

@@ -55,9 +55,6 @@ export function useFastify() {
         }, 0)
         return sc
     })
-    watch(score, (n, oldVal) => {
-        lastScore.value = oldVal;
-    })
     watch([inputPresist, validateObject], (value, oldValue) => {
         if (validateObject.value.canContinue) {
             // score.value += activeWord.value.length
@@ -95,6 +92,7 @@ export function useFastify() {
 
     let interval = ref(null);
     const endTime = () => {
+        lastScore.value = score.value
         randomize()
         clearInterval(interval)
         time.value = TIME_LIMIT
@@ -106,11 +104,11 @@ export function useFastify() {
         interval.value = setInterval(async () => {
             time.value--;
             if (time.value <= 0) {
+                bell.play()
                 inputRef.value.blur()
                 clearInterval(interval.value)
                 interval.value = null
                 input.value = '';
-                bell.play()
                 await done();
                 return endTime()
             }

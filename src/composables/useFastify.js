@@ -24,9 +24,13 @@ const randomize = () => {
     ].sort(() => 0.5 - Math.random()).forEach((arr) => words.push(...arr))
 }
 randomize()
-let bellFile = await import('../assets/BELL.wav');
-var bell = new Audio(bellFile.default)
-bell.preload = true;
+
+var bell = new Audio();
+(async () => {
+    let bellFile = await import('../assets/BELL.wav');
+    bell = new Audio(bellFile.default)
+    bell.preload = true;
+})();
 export function useFastify() {
     const inputRef = ref()
     const route = useRoute()

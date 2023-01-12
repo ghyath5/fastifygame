@@ -16,35 +16,35 @@ const {
   inputRef,
 } = useFastify();
 const emit = defineEmits(["update:input"]);
-const inputType = ref("");
 const onInput = (event) => {
   const newVal = (event.target.value ?? "").trim();
   if (time.value >= TIME_LIMIT && !interval.value) {
     startTime();
   }
   if (
-    inputType.value == "insertCompositionText" &&
-    event.inputType == "insertText"
-  ) {
-    vibrate();
-    inputType.value = "insertText";
-    if (!input.value) {
-      activeWordIndex.value =
-        activeWordIndex.value > 0 ? activeWordIndex.value - 1 : 0;
-    }
-    // input.value = "";
-  } else {
-    input.value = newVal;
-  }
-  if (
     newVal.length > activeWord.value.length &&
     !validateObject.value.canContinue
   ) {
     vibrate();
-    input.value = "";
+    // input.value = "";
+    event.target.value = input.value.trim();
+    return;
   }
-  inputType.value = event.inputType;
-  event.target.value = input.value;
+
+  if (newVal.length > input.value.length + 1) {
+    vibrate();
+    return (event.target.value = input.value.trim());
+  }
+  if (
+    newVal.length == input.value.length &&
+    !validateObject.value.stillValid &&
+    ["insertCompositionText", "insertText"].includes(event.inputType)
+  ) {
+    vibrate();
+    return (event.target.value = input.value.trim());
+  }
+  input.value = newVal;
+  event.target.value = input.value.trim();
 };
 </script>
 

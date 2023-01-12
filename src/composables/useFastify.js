@@ -1,9 +1,8 @@
 import { useVibrate } from "@vueuse/core"
 import { computed, ref, watch, reactive } from "vue"
 import { useRoute } from "vue-router"
-import { activeWordIndex, input, time, TIME_LIMIT, words } from "../store/fastify"
+import { activeWordIndex, input, lastScore, time, TIME_LIMIT, words } from "../store/fastify"
 // import clockFile from '../assets/clock.wav'
-import bellFile from '../assets/BELL.wav'
 const w1 = 'خشمي مثل خشمك ولكن خشمك ليس هو انفك فلا تحشر انفك بالاماكن التي لا ينحشر فيها المناخير يا عزيزي'
 const w2 = 'اذا نظرت في عينك ترى مالم تراه في اذنك وهذا دليل علمي اكيد على ان الاشخاص ترى الاشياء باستخدام العيون كما حال اغلب شعبنا اليوم'
 const w3 = 'ان كنت مضطر ان تسمع ماليس لك به علم فكن من المستمعين للقول المتبعين احسنه'
@@ -25,11 +24,10 @@ const randomize = () => {
     ].sort(() => 0.5 - Math.random()).forEach((arr) => words.push(...arr))
 }
 randomize()
+let bellFile = await import('../assets/BELL.wav');
+var bell = new Audio(bellFile.default)
+bell.preload = true;
 export function useFastify() {
-    // var clock = new Audio(clockFile)
-    var bell = new Audio(bellFile)
-    // clock.preload = true;
-    bell.preload = true;
     const inputRef = ref()
     const route = useRoute()
     if (!route.query?.token) {
@@ -47,10 +45,14 @@ export function useFastify() {
     })
     const { vibrate, isSupported, stop } = useVibrate({ pattern: [100, 50, 100] })
     const score = computed(() => {
-        return words.reduce((prev, currentWord, index) => {
+        let sc = words.reduce((prev, currentWord, index) => {
             if (activeWordIndexPresisit.value > index) return prev + currentWord.length;
             return prev
         }, 0)
+        return sc
+    })
+    watch(score, (n, oldVal) => {
+        lastScore.value = oldVal;
     })
     watch([inputPresist, validateObject], (value, oldValue) => {
         if (validateObject.value.canContinue) {

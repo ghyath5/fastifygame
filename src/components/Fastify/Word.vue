@@ -48,12 +48,10 @@ const wordCheckerClasses = (letter, idx) => {
 };
 const addConnection = (idx, letter) => {
   const prevLetter = props.word[idx - 1];
-  return !["ا", "ل", "ء", "ة"].includes(letter) &&
-    !["و", "ر", "ؤ", "ذ", "د", "ز", "ا", "ل"].includes(prevLetter) &&
-    idx > 0 &&
-    idx < props.word.length - 1
-    ? true
-    : false;
+  // return !["ا", "ل", "ء", "ة"].includes(letter) &&
+  //   !["و", "ر", "ؤ", "ذ", "د", "ز", "ا", "ل"].includes(prevLetter) &&
+  return idx > 0 && idx < props.word.length - 1 ? true : false;
+  // return true;
 };
 // &zwj;
 </script>
@@ -68,7 +66,8 @@ const addConnection = (idx, letter) => {
       v-for="(wordLetter, idx) in wordLetters"
       :key="props.word + wordLetter"
     >
-      {{ addConnection(idx, wordLetter) ? "&#x200d;" : "" }}{{ wordLetter }}
+      {{ addConnection(idx, wordLetter) ? "&#x200d;&zwj;" : ""
+      }}{{ wordLetter }}
     </span>
   </p>
 </template>

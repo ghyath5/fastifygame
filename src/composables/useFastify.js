@@ -3,13 +3,14 @@ import { computed, ref, watch, reactive } from "vue"
 import { useRoute } from "vue-router"
 import { activeWordIndex, input, lastScore, time, TIME_LIMIT, words } from "../store/fastify"
 // import clockFile from '../assets/clock.wav'
-const w1 = 'خشمي مثل خشمك ولكن خشمك ليس هو انفك فلا تحشر انفك بالاماكن التي لا ينحشر فيها المناخير يا عزيزي'
-const w2 = 'اذا نظرت في عينك ترى مالم تراه في اذنك وهذا دليل علمي اكيد على ان الاشخاص ترى الاشياء باستخدام العيون كما حال اغلب شعبنا اليوم'
-const w3 = 'ان كنت مضطر ان تسمع ماليس لك به علم فكن من المستمعين للقول المتبعين احسنه'
-const w4 = 'جالس على مؤخرتك اليوم كما البارح لاحيلتك ولا فتيلتك ايد من الخلف وايد من الامام مثل صبي الحمام'
+const w1 = 'سمعت ذات مرة رجل يتحدث عن معاناة القوم الذين كانوا يعانون من المعاناة الدائمة'
+const w2 = "يقول الشاعر العربي الفصيح انما نحن قوم لم نكن اقوام من قبل كما كنا اليوم مع هذا"
+const w3 = "اسمع يا من تسمع واكتب يا من تكتب هذه الحروف ليست للكتابة وانما للذين كانوا قبلك في هذا اليوم"
+const w4 = 'هل تعلم معنى انك قد كنت في يوم من الايام لا تعلم ما معنى ما كنت تعلم من قبل'
 const w5 = 'اليوم انت حي وغدا تحت التراب يعني لا تفكر حالك رح تخلد بهالدنيا ياروحي مرجوعك الى ربك'
-const w6 = 'تذكر دائما انه هناك دائما كما تتذكر في وقت ماتتذكر من المتذكرين في الدنيا ولا تكن من هؤلاء الذين لم يكن لديهم مفكرة او روزناما'
+const w6 = 'تذكر دائما انه هناك دائما كما تتذكر في وقت ما تتذكر من المتذكرين في الدنيا ولا تكن من هؤلاء الذين لم يكن لديهم مفكرة او روزناما'
 const w7 = "ليك عقلك براسك بتعرف خلاصك"
+const w8 = "هناك رجل عربي يدعى كرايسو كلومنتاس ولكن اسمه اجنباوي لا يقول ولا يفعل شيء وهو من عامة الشعب وانما لأجعلك تكتب اسمه الصعب لكي لا تحصل على مستوى عال في الكتابة"
 
 const randomize = () => {
     words.splice(0);
@@ -21,6 +22,7 @@ const randomize = () => {
         w5.split(' '),
         w6.split(' '),
         w7.split(' '),
+        w8.split(' '),
     ].sort(() => 0.5 - Math.random()).forEach((arr) => words.push(...arr))
 }
 randomize()
@@ -82,7 +84,7 @@ export function useFastify() {
 
     const done = async () => {
         try {
-            await fetch(`http://localhost:8080/set?token=${route.query.token}&s=${score.value}`, {
+            await fetch(`https://tel-games.herokuapp.com/set?token=${route.query.token}&s=${score.value}`, {
                 method: 'POST'
             });
         } catch (e) {
@@ -96,6 +98,7 @@ export function useFastify() {
         randomize()
         clearInterval(interval)
         time.value = TIME_LIMIT
+        alert("SCORE: " + lastScore.value)
         activeWordIndexPresisit.value = 0;
         inputPresist.value = '';
     }

@@ -48,7 +48,8 @@ const wordCheckerClasses = (letter, idx) => {
 };
 </script>
 <template>
-  <div
+  <pdf:language name="arabic" />
+  <p
     v-intersection-observer="[onIntersectionObserver, { threshold: 1 }]"
     class="p-2"
     :class="{ 'text-green-500': props.green }"
@@ -58,11 +59,14 @@ const wordCheckerClasses = (letter, idx) => {
       :class="wordCheckerClasses(wordLetter, idx)"
       v-for="(wordLetter, idx) in wordLetters"
       :key="props.word + wordLetter"
-    >{{ wordLetter }}</i>
-  </div>
+      >{{ wordLetter }}</i
+    >
+  </p>
 </template>
 <style scoped>
-div,i {
-unicode-bidi : bidi-override !important
+p,
+i {
+  unicode-bidi: bidi-override !important;
+  font-family: STSong-Light;
 }
 </style>

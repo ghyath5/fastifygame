@@ -18,8 +18,8 @@ const scrollDown = () => {
 const getBoxHeight = () => {
   return window.screen.height / 4;
 };
-watch(activeWordIndex, (newVal) => {
-  if (newVal == 0) {
+watch(activeWordIndex, () => {
+  if (activeWordIndex.value == 0) {
     y.value = 0;
   }
 });
@@ -40,6 +40,7 @@ watch(activeWordIndex, (newVal) => {
         class="bg-slate-50 mb-4 w-full mt-4 md:w-11/12 m-auto p-5 flex flex-wrap overflow-y-auto"
       >
         <FastifyWord
+          :key="word + i"
           v-for="(word, i) in words"
           :word="word"
           :active="i == activeWordIndex"

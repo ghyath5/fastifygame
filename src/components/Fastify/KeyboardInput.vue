@@ -2,6 +2,7 @@
 import { useVibrate } from "@vueuse/core";
 import { ref } from "vue";
 import { useFastify } from "../../composables/useFastify";
+import { TIME_LIMIT } from "../../store/fastify";
 const { vibrate } = useVibrate({ pattern: [340] });
 const {
   input,
@@ -16,33 +17,34 @@ const {
 } = useFastify();
 const emit = defineEmits(["update:input"]);
 const inputType = ref("");
-const isStillValid = (event) => {
-  if (time.value >= 60 && !interval.value) {
+const onInput = (event) => {
+  const newVal = (event.target.value ?? "").trim();
+  if (time.value >= TIME_LIMIT && !interval.value) {
     startTime();
   }
-  const newVal = (event.target.value ?? "").trim();
   if (
     inputType.value == "insertCompositionText" &&
     event.inputType == "insertText"
   ) {
+    vibrate();
     inputType.value = "insertText";
     if (!input.value) {
       activeWordIndex.value =
         activeWordIndex.value > 0 ? activeWordIndex.value - 1 : 0;
     }
-    vibrate();
-    return (input.value = "");
+    // input.value = "";
+  } else {
+    input.value = newVal;
   }
-  inputType.value = event.inputType;
-
-  input.value = newVal;
   if (
     newVal.length > activeWord.value.length &&
     !validateObject.value.canContinue
   ) {
     vibrate();
-    return (input.value = "");
+    input.value = "";
   }
+  inputType.value = event.inputType;
+  event.target.value = input.value;
 };
 </script>
 
@@ -57,6 +59,6 @@ const isStillValid = (event) => {
     autocapitalize="none"
     spellcheck="false"
     :value="input"
-    @input="isStillValid"
+    @input="onInput"
   />
 </template>

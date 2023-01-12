@@ -1,7 +1,7 @@
 import { useVibrate } from "@vueuse/core"
-import { computed, ref, watch } from "vue"
+import { computed, ref, watch, reactive } from "vue"
 import { useRoute } from "vue-router"
-import { activeWordIndex, input, score, time } from "../store/fastify"
+import { activeWordIndex, input, time, TIME_LIMIT, words } from "../store/fastify"
 // import clockFile from '../assets/clock.wav'
 import bellFile from '../assets/BELL.wav'
 const w1 = 'خشمي مثل خشمك ولكن خشمك ليس هو انفك فلا تحشر انفك بالاماكن التي لا ينحشر فيها المناخير يا عزيزي'
@@ -11,9 +11,9 @@ const w4 = 'جالس على مؤخرتك اليوم كما البارح لاحي
 const w5 = 'اليوم انت حي وغدا تحت التراب يعني لا تفكر حالك رح تخلد بهالدنيا ياروحي مرجوعك الى ربك'
 const w6 = 'تذكر دائما انه هناك دائما كما تتذكر في وقت ماتتذكر من المتذكرين في الدنيا ولا تكن من هؤلاء الذين لم يكن لديهم مفكرة او روزناما'
 const w7 = "ليك عقلك براسك بتعرف خلاصك"
-let words = [];
+
 const randomize = () => {
-    words = [];
+    words.splice(0);
     [
         w1.split(' '),
         w2.split(' '),
@@ -41,17 +41,22 @@ export function useFastify() {
     const activeWord = computed(() => words[activeWordIndex.value])
     const validateObject = computed(() => {
         return {
-            stillValid: activeWord.value.startsWith(input.value),
-            canContinue: activeWord.value == input.value,
+            stillValid: activeWord.value.startsWith(inputPresist.value),
+            canContinue: activeWord.value == inputPresist.value,
         }
     })
     const { vibrate, isSupported, stop } = useVibrate({ pattern: [100, 50, 100] })
-
+    const score = computed(() => {
+        return words.reduce((prev, currentWord, index) => {
+            if (activeWordIndexPresisit.value > index) return prev + currentWord.length;
+            return prev
+        }, 0)
+    })
     watch([inputPresist, validateObject], (value, oldValue) => {
         if (validateObject.value.canContinue) {
-            activeWordIndexPresisit.value++
+            // score.value += activeWord.value.length
             inputPresist.value = ''
-            score.value++
+            activeWordIndexPresisit.value++
         }
         if (
             !validateObject.value.stillValid
@@ -74,7 +79,7 @@ export function useFastify() {
 
     const done = async () => {
         try {
-            await fetch(`https://tel-games.herokuapp.com/set?token=${route.query.token}&s=${score.value}`, {
+            await fetch(`http://localhost:8080/set?token=${route.query.token}&s=${score.value}`, {
                 method: 'POST'
             });
         } catch (e) {
@@ -84,16 +89,14 @@ export function useFastify() {
 
     let interval = ref(null);
     const endTime = () => {
+        randomize()
         clearInterval(interval)
-        time.value = 60
-        activeWordIndex.value = 0;
-        setTimeout(() => {
-            input.value = '';
-            score.value = 0;
-        }, 1000)
+        time.value = TIME_LIMIT
+        activeWordIndexPresisit.value = 0;
+        inputPresist.value = '';
     }
     const startTime = () => {
-        endTime()
+        // endTime()
         interval.value = setInterval(async () => {
             time.value--;
             if (time.value <= 0) {
@@ -102,7 +105,6 @@ export function useFastify() {
                 interval.value = null
                 input.value = '';
                 bell.play()
-                randomize()
                 await done();
                 return endTime()
             }

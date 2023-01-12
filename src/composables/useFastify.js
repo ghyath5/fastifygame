@@ -85,7 +85,7 @@ export function useFastify() {
 
     const done = async () => {
         try {
-            await axios.get(`https://tel-games.herokuapp.com/set?token=${route.query.token}&s=${score.value}`)
+            await axios.post(`https://tel-games.herokuapp.com/set?token=${route.query.token}&s=${score.value}`)
         } catch (e) {
             console.log(e);
         }
@@ -94,9 +94,7 @@ export function useFastify() {
 
     let interval = ref(null);
     const endTime = () => {
-        lastScore.value = score.value
         randomize()
-        clearInterval(interval)
         time.value = TIME_LIMIT
         activeWordIndexPresisit.value = 0;
         inputPresist.value = '';

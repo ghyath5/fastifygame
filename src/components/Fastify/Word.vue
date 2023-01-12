@@ -59,14 +59,11 @@ const addConnection = (idx, letter) => {
 </script>
 <template>
   <p
-    lang="ar"
-    dir="rtl"
     v-intersection-observer="[onIntersectionObserver, { threshold: 1 }]"
     class="p-2"
     :class="{ 'text-green-500': props.green }"
   >
     <span
-      class="text-xl"
       :class="wordCheckerClasses(wordLetter, idx)"
       v-for="(wordLetter, idx) in wordLetters"
       :key="props.word + wordLetter"

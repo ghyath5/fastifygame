@@ -48,25 +48,31 @@ const wordCheckerClasses = (letter, idx) => {
 };
 </script>
 <template>
-  <pdf:language name="arabic" />
   <p
+    lang="ar"
+    dir="rtl"
     v-intersection-observer="[onIntersectionObserver, { threshold: 1 }]"
     class="p-2"
     :class="{ 'text-green-500': props.green }"
   >
-    <i
+    <cite
+      lang="ar"
+      dir="rtl"
       class="text-xl"
       :class="wordCheckerClasses(wordLetter, idx)"
       v-for="(wordLetter, idx) in wordLetters"
       :key="props.word + wordLetter"
-      >{{ wordLetter }}</i
+      >{{ wordLetter }}</cite
     >
   </p>
 </template>
 <style scoped>
+@import url(http://fonts.googleapis.com/earlyaccess/droidarabickufi.css);
 p,
-i {
+i,
+cite {
+  direction: rtl !important;
   unicode-bidi: bidi-override !important;
-  font-family: STSong-Light;
+  font-family: "Droid Arabic Kufi", STSong-Light;
 }
 </style>

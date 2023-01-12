@@ -1,7 +1,13 @@
 <script setup>
 import { vIntersectionObserver } from "@vueuse/components";
+import { isIOS } from "@vueuse/shared";
 import { ref, watch, computed } from "vue";
 import { useFastify } from "../../composables/useFastify";
+import {
+  isIOS as ios,
+  isIPhone13 as i13,
+  isIOS13 as io13,
+} from "mobile-device-detect";
 const props = defineProps({
   word: String,
   active: Boolean,
@@ -46,14 +52,6 @@ const wordCheckerClasses = (letter, idx) => {
       inputLetters.value.length - 1 >= idx,
   };
 };
-const addConnection = (idx, letter) => {
-  const prevLetter = props.word[idx - 1];
-  // return !["ا", "ل", "ء", "ة"].includes(letter) &&
-  //   !["و", "ر", "ؤ", "ذ", "د", "ز", "ا", "ل"].includes(prevLetter) &&
-  return idx > 0 && idx < props.word.length - 1 ? true : false;
-  // return true;
-};
-// &zwj;
 </script>
 <template>
   <p
@@ -62,13 +60,14 @@ const addConnection = (idx, letter) => {
     :class="{ 'text-green-500': props.green }"
   >
     <span
+      v-if="!isIOS && !i13 && !io13 && !ios"
       :class="wordCheckerClasses(wordLetter, idx)"
       v-for="(wordLetter, idx) in wordLetters"
       :key="props.word + wordLetter"
     >
-      {{ addConnection(idx, wordLetter) ? "&#x200d;&zwj;" : ""
-      }}{{ wordLetter }}
+      {{ wordLetter }}
     </span>
+    <span v-else>{{ props.word }}</span>
   </p>
 </template>
 <style scoped>

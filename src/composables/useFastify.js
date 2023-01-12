@@ -90,6 +90,7 @@ export function useFastify() {
         } catch (e) {
             console.log(e);
         }
+        endTime()
     }
 
     let interval = ref(null);
@@ -98,22 +99,21 @@ export function useFastify() {
         randomize()
         clearInterval(interval)
         time.value = TIME_LIMIT
-        alert("SCORE: " + lastScore.value)
         activeWordIndexPresisit.value = 0;
         inputPresist.value = '';
     }
     const startTime = () => {
         // endTime()
-        interval.value = setInterval(async () => {
+        interval.value = setInterval(() => {
             time.value--;
             if (time.value <= 0) {
-                bell.play()
+                done();
                 inputRef.value.blur()
                 clearInterval(interval.value)
-                interval.value = null
                 input.value = '';
-                await done();
-                return endTime()
+                interval.value = null
+                bell.play()
+                return
             }
         }, 1000);
     }

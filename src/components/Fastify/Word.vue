@@ -67,7 +67,7 @@ const wordCheckerClasses = (letter, idx) => {
   </p>
 </template>
 <style scoped>
-@import url(http://fonts.googleapis.com/earlyaccess/droidarabickufi.css);
+@import url(https://fonts.googleapis.com/earlyaccess/droidarabickufi.css);
 p,
 i,
 cite {

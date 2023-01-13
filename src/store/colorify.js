@@ -82,10 +82,9 @@ const next = () => {
         time.value = 8
     } else if (score.value == 10) {
         time.value = 6
-    } else if (score.value >= 20) {
+    } else if (score.value == 20) {
         time.value = 4
-    }
-    else if (score.value >= 30) {
+    } else if (score.value >= 30) {
         time.value = 3
     }
     timer.value = time.value;

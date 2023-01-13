@@ -28,12 +28,18 @@ const randomize = () => {
     ].sort(() => 0.5 - Math.random()).forEach((arr) => words.push(...arr))
 }
 randomize()
-
-var bell = new Audio();
+let audios = {};
 (async () => {
-    let bellFile = await import('../assets/BELL.wav');
-    bell = new Audio(bellFile.default)
-    bell.preload = true;
+    audios = {
+        bell: await import('@/assets/BELL.wav'),
+        key: await import('@/assets/key.mp3'),
+        wrong: await import('@/assets/wrong.mp3'),
+        wrongletter: await import('@/assets/wrongletter.mp3')
+    };
+    for (const [key, value] of Object.entries(audios)) {
+        audios[key + 'audio'] = new Audio(value.default)
+        audios[key + 'audio'].preload = true;
+    }
 })();
 export function useFastify() {
     const inputRef = ref()
@@ -74,14 +80,7 @@ export function useFastify() {
             vibrate()
         }
     })
-    // watch(time, (ti) => {
-    //     if (ti <= 4) {
-    //         clock.play()
-    //     } else {
-    //         clock.pause()
-    //         clock.currentTime = 0
-    //     }
-    // })
+
     const hhmmTime = computed(() => new Date(time.value * 1000).toISOString().slice(14, 19))
 
     const done = async () => {
@@ -111,11 +110,30 @@ export function useFastify() {
                 clearInterval(interval.value)
                 input.value = '';
                 interval.value = null
-                bell.play()
+                audios.bellaudio.play()
                 return
             }
         }, 1000);
     }
+    const keydownEffect = () => {
+        audios.keyaudio.currentTime = 0;
+        audios.keyaudio.play()
+    }
+    const invalidEffect = () => {
+        audios.wrongletteraudio.currentTime = 0;
+        audios.wrongletteraudio.play()
+    }
+    const wrongWrodEffect = () => {
+        audios.wrongaudio.currentTime = 0;
+        audios.wrongaudio.play()
+    }
+    watch([input, validateObject], (val) => {
+        if (val[1].stillValid) {
+            keydownEffect();
+        } else {
+            invalidEffect();
+        }
+    })
     return {
         words,
         input: inputPresist,
@@ -129,6 +147,9 @@ export function useFastify() {
         startTime,
         endTime,
         interval,
-        inputRef
+        inputRef,
+        keydownEffect,
+        invalidEffect,
+        wrongWrodEffect
     }
 }

@@ -7,13 +7,13 @@ const { vibrate } = useVibrate({ pattern: [340] });
 const {
   input,
   direction,
-  activeWordIndex,
   activeWord,
   validateObject,
   startTime,
   interval,
   time,
   inputRef,
+  wrongWrodEffect,
 } = useFastify();
 const emit = defineEmits(["update:input"]);
 const onInput = (event) => {
@@ -26,13 +26,14 @@ const onInput = (event) => {
     !validateObject.value.canContinue
   ) {
     vibrate();
-    // input.value = "";
+    wrongWrodEffect();
     event.target.value = input.value.trim();
     return;
   }
 
   if (newVal.length > input.value.length + 1) {
     vibrate();
+    wrongWrodEffect();
     return (event.target.value = input.value.trim());
   }
   if (
@@ -40,6 +41,7 @@ const onInput = (event) => {
     !validateObject.value.stillValid &&
     ["insertCompositionText", "insertText"].includes(event.inputType)
   ) {
+    wrongWrodEffect();
     vibrate();
     return (event.target.value = input.value.trim());
   }

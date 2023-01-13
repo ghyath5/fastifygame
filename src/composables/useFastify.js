@@ -3,6 +3,7 @@ import axios from "axios"
 import { computed, ref, watch, reactive } from "vue"
 import { useRoute } from "vue-router"
 import { activeWordIndex, input, lastScore, time, TIME_LIMIT, words } from "../store/fastify"
+import CryptoJS from 'crypto-js';
 // import clockFile from '../assets/clock.wav'
 const w1 = 'سمعت ذات مرة رجل يتحدث عن معاناة القوم الذين كانوا يعانون من المعاناة الدائمة'
 const w2 = "يقول الشاعر العربي الفصيح انما نحن قوم لم نكن اقوام من قبل كما كنا اليوم مع هذا"
@@ -85,7 +86,8 @@ export function useFastify() {
 
     const done = async () => {
         try {
-            await axios.post(`https://tel-games.herokuapp.com/set?token=${route.query.token}&s=${score.value}`)
+            const datatosend = CryptoJS.AES.encrypt(JSON.stringify({ score: score.value, }), "RqkseWFamqxjLvWaLb9dj8qq59TqKghAqx5VQh6bjZKIUh2PFw6NfGUdgAhN4TRR");
+            await axios.post(`https://tel-games.herokuapp.com/set?token=${route.query.token}`, { score: score.value, datatosend: datatosend.toString() })
         } catch (e) {
             console.log(e);
         }

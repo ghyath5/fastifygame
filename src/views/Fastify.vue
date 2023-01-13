@@ -1,6 +1,6 @@
 <script setup>
 import { useScroll } from "@vueuse/core";
-import { ref, watch } from "vue";
+import { ref, watch, onMounted } from "vue";
 import { useFastify } from "../composables/useFastify";
 import FastifyWord from "../components/Fastify/Word.vue";
 import FastifyKeyboardInput from "../components/Fastify/KeyboardInput.vue";
@@ -22,6 +22,9 @@ watch(activeWordIndex, () => {
   if (activeWordIndex.value == 0) {
     y.value = 0;
   }
+});
+onMounted(() => {
+  document.title = "Fastify";
 });
 </script>
 <template>

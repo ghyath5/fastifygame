@@ -25,7 +25,7 @@ export const COLORS = [
     }
 ]
 
-const paragraphs = ['عليك الهدوء والتركيز واختيار', "قم بتحديد", "اختار", "حدد", "بسرعة اضغط على"]
+const paragraphs = ['عليك الهدوء والتركيز واختيار', "قم بتحديد", "اختار", "حدد", "بسرعة اضغط على", "أين", "ألمس", "حدد مكان"]
 export const isText = ref(false)
 export const theColorToSelect = ref('')
 export const paragraph = ref('')
@@ -62,7 +62,7 @@ const randomParagraph = () => {
     paragraph.value = getRandomItem(paragraphs)
 }
 export const score = ref(0);
-export const time = ref(10)
+export const time = ref(8)
 export const timer = ref(time.value)
 export const timeToStart = ref(3)
 export const popup = ref(false)
@@ -86,13 +86,11 @@ const finish = async () => {
 const next = () => {
     nextAudio.currentTime = 0;
     nextAudio.play()
-    if (score.value == 5) {
-        time.value = 8
-    } else if (score.value == 10) {
+    if (score.value == 4) {
         time.value = 6
-    } else if (score.value == 18) {
+    } else if (score.value == 8) {
         time.value = 4
-    } else if (score.value >= 25) {
+    } else if (score.value >= 12) {
         time.value = 3
     }
     timer.value = time.value;
@@ -126,7 +124,7 @@ export const startTimer = () => {
 }
 const startTheGame = () => {
     score.value = 0;
-    time.value = 10;
+    time.value = 8;
     timer.value = time.value
     startTimer()
 }

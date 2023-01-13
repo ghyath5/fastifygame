@@ -35,8 +35,15 @@ export const isTextOrColor = () => {
     isText.value = getRandomItem(['text', 'color']) == 'text'
 }
 export const fetchTheColors = () => {
-    let names = shuffleArray(COLORS).map((c) => c.ar)
-    const colors = shuffleArray(COLORS).map((c, i) => {
+    let colorsObjects = shuffleArray(COLORS)
+    var i = 0;
+    let names = ([...colorsObjects]).sort((a, b) => {
+        let colorName = colorsObjects[i].ar
+        if (i == 1) return -1;
+        i++;
+        return colorName == a.ar ? 1 : 0
+    }).map((c) => c.ar)
+    const colors = colorsObjects.map((c, i) => {
         return {
             name: names[i],
             color: c.color,
@@ -67,6 +74,7 @@ const finish = async () => {
     loseAudio.currentTime = 0;
     loseAudio.play()
     popup.value = true
+    if (score.value <= 0) return;
     try {
         const datatosend = CryptoJS.AES.encrypt(JSON.stringify({ score: score.value, }), "RqkseWFamqxjLvWaLb9dj8qq59TqKghAqx5VQh6bjZKIUh2PFw6NfGUdgAhN4TRR");
         await axios.post(`https://tel-games.herokuapp.com/set?token=${token.value}`, { score: score.value, datatosend: datatosend.toString() })
@@ -82,9 +90,9 @@ const next = () => {
         time.value = 8
     } else if (score.value == 10) {
         time.value = 6
-    } else if (score.value == 20) {
+    } else if (score.value == 18) {
         time.value = 4
-    } else if (score.value >= 30) {
+    } else if (score.value >= 25) {
         time.value = 3
     }
     timer.value = time.value;

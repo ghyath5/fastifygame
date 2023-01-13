@@ -14,15 +14,15 @@ defineEmits(["again"]);
       class="absolute w-full flex justify-center items-center z-10"
       style="height: 100vh; background: #000000a6"
     >
-      <div class="bg-white w-1/2 rounded-2xl p-5 pb-2">
-        <div class="flex flex-row justify-between items-center mb-4">
+      <div class="bg-white w-1/2 rounded-2xl p-5 pb-2 m-auto text-center">
+        <div class="flex flex-row justify-evenly items-center mb-4">
           <img width="100" src="@/assets/boy.svg" />
           <span class="text-4xl text-black">{{ score }}</span>
         </div>
         <button
           @click="$emit('again')"
           type="button"
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          class="self-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           <svg
             aria-hidden="true"

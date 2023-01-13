@@ -1,7 +1,7 @@
 <template>
-  <div class="p-1 m-auto text-center">
-    <OverlyTimer v-if="timeToStart" />
-    <PopupComponent @again="initialize" :visible="popup" :score="score" />
+  <OverlyTimer v-if="timeToStart" />
+  <PopupComponent @again="initialize" :visible="popup" :score="score" />
+  <div class="m-auto p-1 text-center">
     <span
       class="text-2xl rounded-full w-1/2 bg-slate-400 block m-auto text-white p-1"
     >
